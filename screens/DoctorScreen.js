@@ -9,7 +9,7 @@ import Reviews from '../components/DoctorScreen.js/Reviews';
 import Location from '../components/DoctorScreen.js/Location';
 
 
-export default function DoctorSreen() {
+export default function DoctorScreen() {
     let name = "Dr. John Jose";
     let speciality = "Therapist";
     let about = "Dr John.jose is an experiece specialist who is constantly working on imporovind his skills"

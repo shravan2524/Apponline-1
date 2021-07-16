@@ -5,7 +5,7 @@ import { TouchableOpacity,Text, View, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "../screens/HomeScreen";
 import ScheduleScreen from "../screens/ScheduleScreen";
-import DoctorSreen from "../screens/DoctorSreen";
+import DoctorScreen from "../screens/DoctorScreen";
 
 
 import colors from "../constants/colors"
@@ -68,7 +68,7 @@ function BottomNavigatorButton({ state, descriptors, navigation }) {
 const BottomNavigator = () => {
     return (
      <Tab.Navigator style={styles.container} tabBar={(props) => <BottomNavigatorButton {...props} />}>
-        <Tab.Screen name="Home" component={DoctorSreen}/>
+        <Tab.Screen name="Home" component={DoctorScreen}/>
         <Tab.Screen name="Schedule" component={ScheduleScreen} />
         <Tab.Screen name="Messages" component={HomeScreen} />
         <Tab.Screen name="Settings" component={ScheduleScreen} />

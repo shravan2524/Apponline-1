@@ -14,7 +14,7 @@ export default function DoctorProfile(props) {
                     width: 100,
                     margin : "auto"
                 }}
-                source={require('/Projects/Appoinline1/Apponline/Images/DoctorDefaultProfile.png')}
+                source={require('../../Images/DoctorDefaultProfile.png')}
             />
             <Text style={styles.textColor}>{props.name}</Text>
             <Text style={styles.textColor}>{props.speciality}</Text>
