@@ -5,18 +5,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from "./screens/HomeScreen";
 import { NavigationContainer } from '@react-navigation/native';
 import BottomNavigator from './Navigators/BottomNavigator';
+import Login from './components/Base/Login';
 
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <BottomNavigator />
-    </NavigationContainer>
+    <Login />
   );
 }
 
 const styles = StyleSheet.create({
-  screen:{
+  screen: {
     flex: 1
   }
 });
