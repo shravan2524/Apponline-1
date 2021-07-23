@@ -47,6 +47,7 @@ function BottomNavigatorButton({ state, descriptors, navigation }) {
           let icon = label=="Home"?'home':label=="Messages"?'message-circle':label=="Schedule"?'calendar':'settings-2';
           return (
             <TouchableOpacity
+              key = {index}
               accessibilityRole="button"
               accessibilityState={isFocused ? { selected: true } : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}
@@ -68,7 +69,7 @@ function BottomNavigatorButton({ state, descriptors, navigation }) {
 const BottomNavigator = () => {
     return (
      <Tab.Navigator style={styles.container} tabBar={(props) => <BottomNavigatorButton {...props} />}>
-        <Tab.Screen name="Home" component={DoctorScreen}/>
+        <Tab.Screen name="Home" component={HomeScreen}/>
         <Tab.Screen name="Schedule" component={ScheduleScreen} />
         <Tab.Screen name="Messages" component={HomeScreen} />
         <Tab.Screen name="Settings" component={ScheduleScreen} />
