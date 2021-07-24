@@ -5,11 +5,20 @@ import { BsPerson } from "react-icons/bs";
 import colors from '../../constants/colors';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RiLockPasswordLine } from "react-icons/ri";
+import { auth } from '../../Firebase';
 
 export default function Login() {
 
     const [username, onUsername] = React.useState("");
     const [password, onPassword] = React.useState("");
+    function onSubmit() {
+        auth.createUserWithEmailAndPassword(username, password)
+        .then((authUser) => {
+            
+        })
+        .catch((err) => alert(err.message));
+        console.log("login pressed");
+      }
     
     return (
         <View style={styles.container}>
@@ -38,13 +47,11 @@ export default function Login() {
                 <View style ={{flexDirection:"row-reverse", marginVertical: 10}}>
                     <Text>Forget Password ?</Text>
                 </View>
-                <View>
-                <TouchableOpacity >
+                <TouchableOpacity onPress={onSubmit} >
               <Text style={styles.button}>
                 Login
               </Text>
             </TouchableOpacity>
-                </View>
 
             </View>
         </View>
