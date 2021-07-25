@@ -15,11 +15,11 @@ import DoctorScheduleCard from "../components/ScheduleScreen/DoctorScheduleCard"
 ///   Future Visits
 const ScheduleScreen = () => {
     return (
-        <ScrollView>
+        <ScrollView style={styles.container}>
             <Text style={styles.header}>Schedule</Text>
             <Timeline />
             <DoctorScheduleCard />
-        </ScrollView>
+        </ScrollView>    
     )
 }
 
@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         fontSize: 30,
         fontWeight: 600
+    },
+    container:{
+        backgroundColor: "#fff"
     }
 })
 export default ScheduleScreen;
