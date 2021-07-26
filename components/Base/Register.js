@@ -10,26 +10,41 @@ import colors from "../../constants/colors";
 import { Input, Text, CheckBox } from "react-native-elements";
 import { auth } from "../../Firebase";
 import { NavigationContainer } from "@react-navigation/native";
+import { db } from "../../Firebase";
 
 export default function Register({navigation}) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [type, setType] = useState(false)
+  const [type, setType] = useState("Doctor")
 
-  function registerUser() {
+  const registerUser = async () => {
     console.log("pressed");
+    console.log(type);
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
-        authUser.user.update({
+        authUser.user.updateProfile({
           displayName: name,
           type : type,
         })
         alert("User Registered Successfully");
+        navigation.navigate("Login")
       })
       .catch(err => console.log(err))
+
+
+      await db
+      .collection("users")
+      .add({
+        Name : name,
+        Email : email,
+        Password : password,
+        Type : type,
+      })
+
+
   }
 
   return (
@@ -69,14 +84,14 @@ export default function Register({navigation}) {
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
             checked={!type}
-            onPress={() => setType(false)}
+            onPress={() => setType("Doctor")}
           />
           <CheckBox
             title="Patient"
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
-            checked={type}
-            onPress={() => setType(true)}
+            checked={!type}
+            onPress={() => setType("Patient")}
           />
         </View>
       </View>

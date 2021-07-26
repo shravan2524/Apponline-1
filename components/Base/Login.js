@@ -1,15 +1,44 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { KeyboardAvoidingView } from "react-native";
 import { View, StyleSheet } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import colors from "../../constants/colors";
+import { auth } from "../../Firebase";
+import { db } from "../../Firebase";
 
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [doctorsList, setDoctorsList] = useState([]);
+  useEffect(() => {
+    const ret = db.collection('users')
+    .onSnapshot(snap => {
+      console.log("snap");
+      console.log(snap);
+      setDoctorsList(snap.docs.map(doc =>( {
+        id : doc.id,
+        name : doc.data(),
+      })))
+      
+    })
+    console.log(doctorsList);
+    return ret;
+  }, []);
+  function login() {
+    auth.onAuthStateChanged((authUser) => {
+      console.log(doctorsList);
+      console.log(doctorsList[0].name.Name);
+      console.log(doctorsList[1].name.Name);
+      console.log(doctorsList[2].name.Name);
+      if (authUser) {
+        navigation.replace("DoctorProfile");
+      }
+    });
+  }
+
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View>
@@ -33,7 +62,7 @@ export default function Login({ navigation }) {
           onChangeText={(text) => setPassword(text)}
         />
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={login}>
         <Text style={{ padding: 5, color: "#ffff" }} h4>
           Login
         </Text>
