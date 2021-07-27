@@ -43,8 +43,6 @@ export default function Register({navigation}) {
         Password : password,
         Type : type,
       })
-
-
   }
 
   return (
@@ -83,15 +81,17 @@ export default function Register({navigation}) {
             title="Doctor"
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
-            checked={!type}
+            checked={type == "Doctor"}
             onPress={() => setType("Doctor")}
+            containerStyle={styles.checkBox}
           />
           <CheckBox
             title="Patient"
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
-            checked={!type}
+            checked={type == "Patient"}
             onPress={() => setType("Patient")}
+            containerStyle={styles.checkBox}
           />
         </View>
       </View>
@@ -136,5 +136,8 @@ const styles = StyleSheet.create({
   typeGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  checkBox:{
+      backgroundColor: colors.lwhite
   }
 });

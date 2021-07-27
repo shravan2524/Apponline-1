@@ -12,27 +12,8 @@ import { db } from "../../Firebase";
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [doctorsList, setDoctorsList] = useState([]);
-  useEffect(() => {
-    const ret = db.collection('users')
-    .onSnapshot(snap => {
-      console.log("snap");
-      console.log(snap);
-      setDoctorsList(snap.docs.map(doc =>( {
-        id : doc.id,
-        name : doc.data(),
-      })))
-      
-    })
-    console.log(doctorsList);
-    return ret;
-  }, []);
   function login() {
     auth.onAuthStateChanged((authUser) => {
-      console.log(doctorsList);
-      console.log(doctorsList[0].name.Name);
-      console.log(doctorsList[1].name.Name);
-      console.log(doctorsList[2].name.Name);
       if (authUser) {
         navigation.replace("DoctorProfile");
       }

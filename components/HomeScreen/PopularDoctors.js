@@ -1,9 +1,11 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 
 import { Text, View, StyleSheet, ScrollView, FlatList } from "react-native";
 import { Icon } from "react-native-eva-icons";
 import DoctorCard from "./DoctorCard";
 import colors from "../../constants/colors";
+
+import {db} from "../../Firebase";
 
 let doctorsList = [
     {
@@ -52,6 +54,24 @@ const formatData = (list) => {
 }
 
 const PopularDoctors = (props) => {
+    const [doctorsList, setDoctorsList] = useState([]);
+
+    useEffect(() => {
+        let unsub = db.collection("doctors")
+            .onSnapshot((snapshot) => {
+                    let doctors = [];
+                    snapshot.docs.forEach(doc => {
+                        doctors.push(doc.data());
+                    })
+                    setDoctorsList(doctors);
+                }, (error) => {
+                    console.log(error)
+                }
+            );
+        return unsub;
+    }, [])
+
+
     const renderItem = ({item, index}) => {
         if(item.empty == true){
            return <DoctorCard visible={false} name={''} speciality={''} rating={''}/>
@@ -64,12 +84,15 @@ const PopularDoctors = (props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.headText}>Popular Doctors</Text>
-            <FlatList
-                data = {formatData(doctorsList)}
-                style= {styles.list}
-                renderItem={renderItem}
-                numColumns = {2}
-            />
+            {doctorsList != []?
+                <FlatList
+                    data = {formatData(doctorsList)}
+                    style= {styles.list}
+                    renderItem={renderItem}
+                    numColumns = {2}
+                />:
+                <Text h1>Loading...</Text>
+            }
         </View>   
     )
 }
