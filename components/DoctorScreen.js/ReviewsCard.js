@@ -18,7 +18,7 @@ export default function ReviewsCard(props) {
                 <Text>{props.name}  </Text>
                   <Text style = {styles.item1}><BsFillStarFill style={{ color: "#F9BA04" }} /> {props.stars}</Text>
             </View>
-            <View >{props.desc}</View>
+            <Text>{props.desc}</Text>
         </View>
     )
 }

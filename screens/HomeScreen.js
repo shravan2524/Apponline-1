@@ -12,7 +12,7 @@ import Visit from '../components/HomeScreen/Visit';
 *   Popular Doctors
 *       
 */
-function HomeScreen() {
+function HomeScreen({ navigation }) {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
@@ -20,7 +20,7 @@ function HomeScreen() {
             </View>
             <Visit/>
             <Symptoms />
-            <PopularDoctors />
+            <PopularDoctors navigation={navigation}/>
         </ScrollView>
     )
 }

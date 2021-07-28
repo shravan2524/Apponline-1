@@ -6,6 +6,7 @@ import DoctorCard from "./DoctorCard";
 import colors from "../../constants/colors";
 
 import {db} from "../../Firebase";
+import { TouchableOpacity } from "react-native";
 
 let doctorsList = [
     {
@@ -53,7 +54,7 @@ const formatData = (list) => {
     return list;
 }
 
-const PopularDoctors = (props) => {
+const PopularDoctors = ({ navigation }) => {
     const [doctorsList, setDoctorsList] = useState([]);
 
     useEffect(() => {
@@ -61,8 +62,12 @@ const PopularDoctors = (props) => {
             .onSnapshot((snapshot) => {
                     let doctors = [];
                     snapshot.docs.forEach(doc => {
-                        doctors.push(doc.data());
+                        doctors.push({...doc.data(), _id: doc.id});
                     })
+                    doctors.sort((a,b) => {
+                        return b.rating - a.rating;
+                    })
+                    console.log(doctors)
                     setDoctorsList(doctors);
                 }, (error) => {
                     console.log(error)
@@ -74,10 +79,10 @@ const PopularDoctors = (props) => {
 
     const renderItem = ({item, index}) => {
         if(item.empty == true){
-           return <DoctorCard visible={false} name={''} speciality={''} rating={''}/>
+           return <DoctorCard id={item._id} visible={false} name={''} speciality={''} rating={''} navigation={navigation}/>
         }
         return (
-            <DoctorCard visible={true} name={item.name} speciality={item.speciality} rating={item.rating} />
+            <DoctorCard id={item._id} visible={true} name={item.name} speciality={item.speciality} rating={item.rating} navigation={navigation}/>
         )
     }
 
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
     headText:{
         fontSize: 28,
         padding: 10,
-        fontWeight: 400
+        fontWeight: "400"
     }
 
 })

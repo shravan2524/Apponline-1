@@ -30,9 +30,9 @@ export default function Reviews(props) {
             <ScrollView horizontal={true} >
             <View style={styles.item}>
                 {
-                    reviews.map(x => {
+                    reviews.map((x, index) => {
                         return (
-                            <ReviewsCard style={styles.card} name={x.name} stars={x.stars} desc={x.desc} />
+                            <ReviewsCard key = {index} style={styles.card} name={x.name} stars={x.stars} desc={x.desc} />
                         )
                     })
                 }

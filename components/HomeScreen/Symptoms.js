@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     headerText:{
         color: 'black',
         fontSize: 25,
-        fontWeight: 400
+        fontWeight: "400"
     },
     scrollContainer:{
         marginTop: 10,

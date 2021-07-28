@@ -15,7 +15,7 @@ export default function Login({ navigation }) {
   function login() {
     auth.onAuthStateChanged((authUser) => {
       if (authUser) {
-        navigation.replace("DoctorProfile");
+        navigation.replace("Home");
       }
     });
   }
