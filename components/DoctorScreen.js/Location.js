@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, Button } from "react-native";
-import { IoCallOutline } from "react-icons/io5";
-import { HiLocationMarker } from "react-icons/hi";
+import {Icon} from "react-native-elements";
 import colors from "../../constants/colors";
 import { Dimensions } from "react-native";
 
@@ -21,7 +20,7 @@ export default function Location(props) {
       <View style={styles.container}>
         <View style={styles.container1}>
           <View style={styles.item}>
-            {/* <HiLocationMarker style={{ color: colors.blue, fontSize: 30 }} /> */}
+            <Icon name="map-marker-alt" type="font-awesome-5" />
           </View>
           <View style={styles.container2}>
             <View style={{ fontSize: 18, fontWeight: "500" }}>
@@ -44,7 +43,8 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 15,
-    borderRadius: 100,
+    width: 55,
+    borderRadius: 40,
     backgroundColor: colors.llblue,
   },
   container1: {

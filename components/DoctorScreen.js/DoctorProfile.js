@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet } from "react-native";
-import { IoCallOutline } from "react-icons/io5";
-import { BsFillChatDotsFill } from "react-icons/bs";
+import {Icon} from 'react-native-elements';
 import colors from '../../constants/colors';
 
 export default function DoctorProfile(props) {    
@@ -9,10 +8,10 @@ export default function DoctorProfile(props) {
         <View style = {styles.container}>
             <Image 
                 style={{
+                    flex: 1,
                     resizeMode: "cover",
                     height: 100,
                     width: 100,
-                    margin : "auto"
                 }}
                 source={require('../../Images/DoctorDefaultProfile.png')}
             />
@@ -26,19 +25,23 @@ export default function DoctorProfile(props) {
                 marginTop: 10,
                 justifyContent: "space-around"
             }}>
-                <View style={styles.imageStyle} ></View>
-                <View style={styles.imageStyle} ></View>
+                <View style={styles.imageStyle} >
+                    <Icon name="call-outline" type="ionicon"/>
+                </View>
+                <View style={styles.imageStyle}>
+                    <Icon name="comment-dots" type="font-awesome-5"/>
+                </View>
             </View>
         </View>
     )
 }
-{/* <IoCallOutline  /> */}
-{/* <BsFillChatDotsFill /> */}
 const styles = StyleSheet.create({
     container:{
+        flex: 1,
         textAlign: "center",
         padding: 10,
         justifyContent: 'center',
+        alignItems: 'center'
         // margin: "auto",
     },
     textColor:{
