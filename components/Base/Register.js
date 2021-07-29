@@ -96,7 +96,7 @@ export default function Register({navigation}) {
         </View>
       </View>
       <TouchableOpacity style={styles.button} onPress={registerUser}>
-        <Text style={{ padding: 5, color: "#ffff" }} h4>
+        <Text style={{ padding: 5, color: "#fff" }} h4>
           Register
         </Text>
       </TouchableOpacity>

@@ -21,7 +21,7 @@ export default function Location(props) {
       <View style={styles.container}>
         <View style={styles.container1}>
           <View style={styles.item}>
-            <HiLocationMarker style={{ color: colors.blue, fontSize: 30 }} />
+            {/* <HiLocationMarker style={{ color: colors.blue, fontSize: 30 }} /> */}
           </View>
           <View style={styles.container2}>
             <View style={{ fontSize: 18, fontWeight: "500" }}>
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   item: {
     padding: 15,
-    borderRadius: "100%",
+    borderRadius: 100,
     backgroundColor: colors.llblue,
   },
   container1: {

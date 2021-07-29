@@ -13,6 +13,7 @@ export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   function login() {
+    console.log("here");
     auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         navigation.replace("Home");

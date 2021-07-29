@@ -14,12 +14,12 @@ export default function Reviews(props) {
                 <View style={styles.header1}>
                     <Text style={{
                         fontSize: 18,
-                        fontWeight: '500',
+                        fontWeight: "500",
                     }}>
                         Reviews
                     </Text>
                     <Text>
-                        <BsFillStarFill style={{ color: "#F9BA04", marginLeft : 10 }} />
+                        
                         4.5(231)
                     </Text>
                 </View>
@@ -45,19 +45,18 @@ export default function Reviews(props) {
 const styles = StyleSheet.create({
     header: {
         
-        flex: "1",
+        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems : "baseline"
     },
     header1: {
-        flex: "1",
+        flex: 1,
         flexDirection: "row",
         alignItems : "baseline"
     },
     item: {
         flexDirection: 'row',
-        rowGap: 2,
         padding: 10,
         marginRight: 10,
         justifyContent: "space-between",

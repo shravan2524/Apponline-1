@@ -19,19 +19,21 @@ export default function DoctorProfile(props) {
             <Text style={styles.textColor}>{props.name}</Text>
             <Text style={styles.textColor}>{props.speciality}</Text>
             <View style={{
-                flex: "1",
+                flex: 1,
                 flexDirection: "row",
                 margin : "auto",
                 width:100,
                 marginTop: 10,
                 justifyContent: "space-around"
             }}>
-                <View style={styles.imageStyle} ><IoCallOutline  /></View>
-                <View style={styles.imageStyle} ><BsFillChatDotsFill /></View>
+                <View style={styles.imageStyle} ></View>
+                <View style={styles.imageStyle} ></View>
             </View>
         </View>
     )
 }
+{/* <IoCallOutline  /> */}
+{/* <BsFillChatDotsFill /> */}
 const styles = StyleSheet.create({
     container:{
         textAlign: "center",
@@ -49,6 +51,6 @@ const styles = StyleSheet.create({
         borderColor: "#fff",
         borderRadius: 25,
         backgroundColor: colors.lblue,
-        color: "fff"
+        color: "#fff"
     }
 });

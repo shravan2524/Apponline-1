@@ -16,12 +16,13 @@ export default function ReviewsCard(props) {
         <View style={styles.item}>
             <View style={{flexDirection: "row", justifyContent: "space-between", marginEnd: 10}}>
                 <Text>{props.name}  </Text>
-                  <Text style = {styles.item1}><BsFillStarFill style={{ color: "#F9BA04" }} /> {props.stars}</Text>
+                  <Text style = {styles.item1}> {props.stars}</Text>
             </View>
             <Text>{props.desc}</Text>
         </View>
     )
 }
+{/* <BsFillStarFill style={{ color: "#F9BA04" }} /> */}
 const styles = StyleSheet.create({
     item:{
         maxWidth : windowWidth,

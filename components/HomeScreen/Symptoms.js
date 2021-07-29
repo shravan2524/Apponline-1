@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
     },
     item:{
         flexDirection: 'row',
-        rowGap: 2,
         backgroundColor: colors.hwhite,
         padding: 10 ,
         marginRight: 10,

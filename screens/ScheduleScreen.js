@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         paddingVertical: 36,
         paddingHorizontal: 10,
         fontSize: 30,
-        fontWeight: 600
+        fontWeight: "600"
     },
     container:{
         backgroundColor: "#fff"

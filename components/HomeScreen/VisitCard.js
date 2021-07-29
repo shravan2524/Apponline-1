@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
     textDescription:{
         fontSize: 12,
-        fontWeight: 400,
+        fontWeight: "400",
         color: colors.hwhite
     }
 
