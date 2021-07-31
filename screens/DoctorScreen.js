@@ -14,6 +14,7 @@ import Appointment from "../components/Modals/Appointment";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from "react-native";
 import { color } from "react-native-elements/dist/helpers";
+import { auth } from "../Firebase";
 
 function DoctorScreen({ route, navigation, props }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -86,10 +87,7 @@ function DoctorScreen({ route, navigation, props }) {
   let address = "Los Angles, USA";
 
 
- const appointmentBooking = () => {
-   console.log("nk");
- }
-
+  const [PateintsEmail, setPateintsEmail] = useState('')
 
   useEffect(() => {
     let unseb = db.collection("schedule")
@@ -104,9 +102,23 @@ function DoctorScreen({ route, navigation, props }) {
       }, (error) => {
         console.log(error)
       });
+
+      
+      auth.onAuthStateChanged((authUser) => {
+        if (authUser) {
+          // console.log(authUser.email)
+          setPateintsEmail(authUser.email);
+        }
+      });
+      
     return unseb;
   }, []);
 
+  const appointmentBooking = (id) => {
+    console.log(id);
+    console.log(PateintsEmail);
+  }
+ 
   return doctorInfo ? (
     <View style={{ flex: 1 }}>
 
@@ -163,22 +175,11 @@ function DoctorScreen({ route, navigation, props }) {
                 if (i.DoctorId == id && selectdate == i.Date) {
                   return (
                     <View
-                     style={{
-                      flexDirection: 'row',
-                      marginHorizontal : 30,
-                      marginTop : 20,
-                      padding : 10,
-                      justifyContent: 'space-between',
-                      borderWidth : 1,
-                      alignItems: 'center',
-                      borderColor : colors.lblue,
-                      borderRadius : 5,
-                    }}>
+                     style={styles.div}>
                       <Text>{i.Starttime} {'  -  '}{i.Endtime}</Text>
-                      <Pressable style={styles.booknow} onPress={appointmentBooking(this)}><Text style={{color: "white"}}>Book Now</Text></Pressable>
+                      <Pressable style={styles.booknow} onPress={() => appointmentBooking(i._id)}><Text style={{color: "white"}}>Book Now</Text></Pressable>
                       <Text style={{fontWeight : 'bold'}}>Status</Text>
                     </View>
-
                   )
                 }   
               })
@@ -264,6 +265,17 @@ const styles = StyleSheet.create({
     backgroundColor : "#361f18",
     borderRadius : 1000,
     padding : 5,
+  },
+  div : {
+      flexDirection: 'row',
+      marginHorizontal : 30,
+      marginTop : 20,
+      padding : 10,
+      justifyContent: 'space-between',
+      borderWidth : 1,
+      alignItems: 'center',
+      borderColor : colors.lblue,
+      borderRadius : 5,
   }
 });
 

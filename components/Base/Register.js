@@ -34,7 +34,9 @@ export default function Register({navigation}) {
       })
       .catch(err => console.log(err))
 
+      var Uid  ;
 
+      
       await db
       .collection("users")
       .add({
