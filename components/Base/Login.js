@@ -16,8 +16,10 @@ export default function Login({ navigation }) {
     console.log("here");
     auth.onAuthStateChanged((authUser) => {
       if (authUser) {
-        navigation.replace("Home");
-        console.log(authUser.email)
+        navigation.replace("Home", {
+          screen: 'Home',
+          params: {email: authUser.email}
+        });
       }
     });
   }

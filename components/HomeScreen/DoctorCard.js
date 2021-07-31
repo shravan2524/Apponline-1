@@ -4,14 +4,15 @@ import { TouchableOpacity } from "react-native";
 import { Text, View, StyleSheet } from "react-native";
 import { Icon } from "react-native-eva-icons";
 import colors from "../../constants/colors";
-const DoctorCard = ({ id, visible, rating, speciality, name, navigation }) => {
+const DoctorCard = ({ email, id, visible, rating, speciality, name, navigation }) => {
   return (
     <TouchableOpacity
       style={visible ? styles.container : [styles.containerInvisible]}
       onPress = {() => {
           if(id){
             navigation.navigate("Doctor", {
-                id
+                id,
+                email
             })
           }
       }}

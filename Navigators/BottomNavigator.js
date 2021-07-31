@@ -66,7 +66,8 @@ function BottomNavigatorButton({ state, descriptors, navigation }) {
     );
   }
 
-const BottomNavigator = () => {
+const BottomNavigator = ({route}) => {
+   const {email} = route.params
     return (
      <Tab.Navigator style={styles.container} tabBar={(props) => <BottomNavigatorButton {...props} />}>
         <Tab.Screen name="Home" component={HomeScreen}/>

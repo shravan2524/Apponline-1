@@ -12,7 +12,9 @@ import Visit from '../components/HomeScreen/Visit';
 *   Popular Doctors
 *       
 */
-function HomeScreen({ navigation }) {
+function HomeScreen({ route, navigation }) {
+    const {email} = route.params;
+    // let email = "asdfad";
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
@@ -20,7 +22,7 @@ function HomeScreen({ navigation }) {
             </View>
             <Visit/>
             <Symptoms />
-            <PopularDoctors navigation={navigation}/>
+            <PopularDoctors email = {email} navigation={navigation}/>
         </ScrollView>
     )
 }

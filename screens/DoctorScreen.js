@@ -16,10 +16,10 @@ import { TouchableOpacity } from "react-native";
 import { color } from "react-native-elements/dist/helpers";
 import { auth } from "../Firebase";
 
-function DoctorScreen({ route, navigation, props }) {
+function DoctorScreen({ route }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [doctorInfo, setDoctorInfo] = useState();
-  const { id } = route.params;
+  const { id, email } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [selectdate, setSelectdate] = useState("");
   const showDatePicker = () => {
@@ -106,19 +106,12 @@ function DoctorScreen({ route, navigation, props }) {
       }
     );
 
-    auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        // console.log(authUser.email)
-        setPateintsEmail(authUser.email);
-      }
-    });
-
     return unseb;
   }, []);
 
   const appointmentBooking = (id) => {
     console.log(id);
-    console.log(PateintsEmail);
+    console.log(email);
     db.collection("schedule").onSnapshot(
       (snapshot) => {
         snapshot.docs.forEach((doc) => {
