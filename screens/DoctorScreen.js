@@ -15,8 +15,10 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from "react-native";
 import { color } from "react-native-elements/dist/helpers";
 import { auth } from "../Firebase";
-
-function DoctorScreen({ route }) {
+import 'firebase/firestore';
+import firebase from "firebase";
+import { First } from "react-bootstrap/esm/PageItem";
+function DoctorScreen({ route, navigation }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [doctorInfo, setDoctorInfo] = useState();
   const { id, email } = route.params;
@@ -61,7 +63,7 @@ function DoctorScreen({ route }) {
           console.log(error);
         }
       );
-      return unsub
+    return unsub
   });
   let name = "Dr. John Jose";
   let speciality = "Therapist";
@@ -88,8 +90,6 @@ function DoctorScreen({ route }) {
   let clinic = "Lotus Clinic";
   let address = "Los Angles, USA";
 
-  const [PateintsEmail, setPateintsEmail] = useState("");
-
   useEffect(() => {
     let unseb = db.collection("schedule").onSnapshot(
       (snapshot) => {
@@ -109,25 +109,39 @@ function DoctorScreen({ route }) {
     return unseb;
   }, []);
 
-  const appointmentBooking = (id) => {
+  const [array, setArray] = useState([]);
+
+  async function appointmentBooking(id){
     console.log(id);
     console.log(email);
-    db.collection("schedule").onSnapshot(
-      (snapshot) => {
-        snapshot.docs.forEach((doc) => {
-          // slots.push({...doc.data(), _id: doc.id});
-          console.log(...doc.data());
-        });
-      },
-      (error) => {
+    await db.collection("schedule")
+      .doc(id)
+      .update({
+        Patients : firebase.firestore.FieldValue.arrayUnion(email),
+      })
+      .then((doc) => {
+        console.log('Scheduled');
+      })
+      .catch((error) => {
         console.log(error);
-      }
-    );
+      });
+
+      await db.collection("users")
+      .doc("ygBcy5VAzI5TSjqtBaJX")
+      .update({
+        Schedules : firebase.firestore.FieldValue.arrayUnion(id),
+      })
+      .then((doc) => {
+        alert("Appointment Booked");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return doctorInfo ? (
     <View style={{ flex: 1 }}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
@@ -228,7 +242,7 @@ const styles = StyleSheet.create({
     width: 300,
     margin: 5,
   },
-  header: {    
+  header: {
     paddingVertical: 36,
     paddingHorizontal: 10,
     justifyContent: "center",
