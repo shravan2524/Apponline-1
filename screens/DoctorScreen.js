@@ -108,15 +108,25 @@ function DoctorScreen({ route, navigation, props }) {
         if (authUser) {
           // console.log(authUser.email)
           setPateintsEmail(authUser.email);
+
         }
       });
-      
+
     return unseb;
   }, []);
 
   const appointmentBooking = (id) => {
     console.log(id);
     console.log(PateintsEmail);
+    db.collection("schedule")
+      .onSnapshot((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          // slots.push({...doc.data(), _id: doc.id});
+          console.log(...doc.data());
+        })
+      }, (error) => {
+        console.log(error)
+      });
   }
  
   return doctorInfo ? (
