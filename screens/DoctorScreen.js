@@ -111,13 +111,13 @@ function DoctorScreen({ route, navigation }) {
 
   const [array, setArray] = useState([]);
 
-  async function appointmentBooking(id){
+  async function appointmentBooking(id) {
     console.log(id);
     console.log(email);
     await db.collection("schedule")
       .doc(id)
       .update({
-        Patients : firebase.firestore.FieldValue.arrayUnion(email),
+        Patients: firebase.firestore.FieldValue.arrayUnion(email),
       })
       .then((doc) => {
         console.log('Scheduled');
@@ -126,13 +126,10 @@ function DoctorScreen({ route, navigation }) {
         console.log(error);
       });
 
-      await db.collection("users")
-      .doc("ygBcy5VAzI5TSjqtBaJX")
+    await db.collection("users")
+      .where("Email", "==", email)
       .update({
-        Schedules : firebase.firestore.FieldValue.arrayUnion(id),
-      })
-      .then((doc) => {
-        alert("Appointment Booked");
+        Schedules: firebase.firestore.FieldValue.arrayUnion(id),
       })
       .catch((error) => {
         console.log(error);

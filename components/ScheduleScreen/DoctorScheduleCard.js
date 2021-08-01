@@ -9,7 +9,7 @@ import { db } from "../../Firebase";
 // time
 // schedule
 
-const DoctorDetails = ({name, speciality}) => {
+const DoctorDetails = ({ name, speciality }) => {
     return (
 
         <View style={styles.doctorDetails}>
@@ -22,8 +22,8 @@ const DoctorDetails = ({name, speciality}) => {
     )
 }
 
-const TimeAndButtons = ({date, starttime, endtime}) => {
-    
+const TimeAndButtons = ({ date, starttime, endtime }) => {
+
     return (
         <View style={styles.timeAndButtons}>
             <View style={styles.time}>
@@ -38,45 +38,59 @@ const TimeAndButtons = ({date, starttime, endtime}) => {
     )
 }
 
-function DoctorScheduleCard(){
-    const [schedules, setSchedules] = useState([]);
+function DoctorScheduleCard() {
+    // const {email} = route.params;
     const [mine, setmine] = useState("");
-    
+
+    const [slots, setSlots] = useState([]);
+
     useEffect(() => {
-        async function unseb (){
-        console.log("snap");
-        let  response = await db.collection("users")
-        .doc("ygBcy5VAzI5TSjqtBaJX")
-        .get((snap) => {
-            setmine(snap.data());
-            console.log(mine);
-        })
-        .catch((error) =>{
-            console.log(error);
-        })
-        console.log(mine);
-        return response;
-    }
-    console.log(mine);
-        return unseb;
+        var c = 0;
+         async function getSlots  (schedules) {
+            let tempslots = [];
+            await schedules.forEach(scheduleId => {
+                 db.collection("schedule").doc(scheduleId).onSnapshot(
+                    (snapshot) => {
+                        console.log(snapshot.data());
+                        tempslots.push(snapshot.data());
+                        // console.log(tempslots);
+                        setSlots(tempslots);
+                    }
+                )
+            });
+            console.log("tempslots", tempslots);
+            setSlots(tempslots);
+        };
+        const unsub = db.collection("users")
+            .where("Email", "==", "Abhi@gmail.com")
+            .onSnapshot((snap) => {
+                let schedules = snap.docs[0].data().Schedules;
+                console.log(schedules);
+                getSlots(schedules);
+            },
+                (error) => {
+                    console.log(error);
+                })
+
+        return unsub;
+
     }, []);
 
-        return(
-            <View>
-        {
-            console.log(mine),
-            schedules.map((slots) => {
-                console.log(mine)
-                return (
-                    <View style={styles.container}>
-                        <DoctorDetails name={"slots.DoctorName"} speciality ={"slots.Speciality"}/>
-                        <TimeAndButtons date={"slots.Date"} starttime={"slots.Starttime"} endtime={"slots.Endtime"} />
-                    </View>
-                )
-            })
-        }
+    return (
+        <View>
+            {
+                // console.log(slots),
+                slots.map((tempslots) => {
+                    return (
+                        <View style={styles.container}>
+                            <DoctorDetails name={tempslots.doctorName} speciality={tempslots.speciality} />
+                            <TimeAndButtons date={tempslots.Date} starttime={tempslots.starttime} endtime={tempslots.Endtime} />
+                        </View>
+                    )
+                })
+            }
         </View>
-        )
+    )
 
 }
 
