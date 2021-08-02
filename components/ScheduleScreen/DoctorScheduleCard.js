@@ -48,21 +48,23 @@ function DoctorScheduleCard() {
         var c = 0;
          async function getSlots  (schedules) {
             let tempslots = [];
+            var c = 0;
             await schedules.forEach(scheduleId => {
                  db.collection("schedule").doc(scheduleId).onSnapshot(
                     (snapshot) => {
                         console.log(snapshot.data());
                         tempslots.push(snapshot.data());
                         // console.log(tempslots);
-                        setSlots(tempslots);
+                        c++;
+                        if(c==(schedules.length)){
+                            setSlots(tempslots);                            
+                        }
                     }
                 )
             });
-            console.log("tempslots", tempslots);
-            setSlots(tempslots);
         };
         const unsub = db.collection("users")
-            .where("Email", "==", "Abhi@gmail.com")
+            .where("Email", "==", "kapil@gmail.com")
             .onSnapshot((snap) => {
                 let schedules = snap.docs[0].data().Schedules;
                 console.log(schedules);
@@ -83,8 +85,8 @@ function DoctorScheduleCard() {
                 slots.map((tempslots) => {
                     return (
                         <View style={styles.container}>
-                            <DoctorDetails name={tempslots.doctorName} speciality={tempslots.speciality} />
-                            <TimeAndButtons date={tempslots.Date} starttime={tempslots.starttime} endtime={tempslots.Endtime} />
+                            <DoctorDetails name={tempslots.DoctorName} speciality={tempslots.Speciality} />
+                            <TimeAndButtons date={tempslots.Date} starttime={tempslots.Starttime} endtime={tempslots.Endtime} />
                         </View>
                     )
                 })

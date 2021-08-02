@@ -120,17 +120,18 @@ function DoctorScreen({ route, navigation }) {
         Patients: firebase.firestore.FieldValue.arrayUnion(email),
       })
       .then((doc) => {
-        console.log('Scheduled');
+        alert("Appointment Booked");
       })
       .catch((error) => {
         console.log(error);
       });
 
     await db.collection("users")
-      .where("Email", "==", email)
+      .doc("PkgRmT4N6fgCQpZJ7Mkw")
       .update({
         Schedules: firebase.firestore.FieldValue.arrayUnion(id),
       })
+      // .than(doc => alert("Appointment Booked"))
       .catch((error) => {
         console.log(error);
       });
