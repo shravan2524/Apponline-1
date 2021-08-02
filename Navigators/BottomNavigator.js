@@ -71,7 +71,7 @@ const BottomNavigator = ({route}) => {
     return (
      <Tab.Navigator style={styles.container} tabBar={(props) => <BottomNavigatorButton {...props} />}>
         <Tab.Screen name="Home" component={HomeScreen}/>
-        <Tab.Screen name="Schedule" component={ScheduleScreen} />
+        <Tab.Screen name="Schedule" component={ScheduleScreen} initialParams={{email}}/>
         <Tab.Screen name="Messages" component={HomeScreen} />
         <Tab.Screen name="Settings" component={ScheduleScreen} />
       </Tab.Navigator>

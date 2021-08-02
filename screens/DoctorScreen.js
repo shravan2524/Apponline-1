@@ -15,7 +15,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TouchableOpacity } from "react-native";
 import { color } from "react-native-elements/dist/helpers";
 import { auth } from "../Firebase";
-import 'firebase/firestore';
+import "firebase/firestore";
 import firebase from "firebase";
 import { First } from "react-bootstrap/esm/PageItem";
 function DoctorScreen({ route, navigation }) {
@@ -63,7 +63,7 @@ function DoctorScreen({ route, navigation }) {
           console.log(error);
         }
       );
-    return unsub
+    return unsub;
   });
   let name = "Dr. John Jose";
   let speciality = "Therapist";
@@ -86,9 +86,9 @@ function DoctorScreen({ route, navigation }) {
       desc: "Many thanks to his doctor for getiing my best trearment",
     },
   ];
-  const [schedules, setSchedules] = useState([]);
   let clinic = "Lotus Clinic";
   let address = "Los Angles, USA";
+  const [schedules, setSchedules] = useState([]);
 
   useEffect(() => {
     let unseb = db.collection("schedule").onSnapshot(
@@ -109,13 +109,11 @@ function DoctorScreen({ route, navigation }) {
     return unseb;
   }, []);
 
-  const [array, setArray] = useState([]);
-
-  async function appointmentBooking(id) {
-    console.log(id);
-    console.log(email);
-    await db.collection("schedule")
-      .doc(id)
+  async function appointmentBooking(slotId) {
+    console.log("slotId", slotId, "email", email);
+    await db
+      .collection("schedule")
+      .doc(slotId)
       .update({
         Patients: firebase.firestore.FieldValue.arrayUnion(email),
       })
@@ -126,16 +124,13 @@ function DoctorScreen({ route, navigation }) {
         console.log(error);
       });
 
-    await db.collection("users")
-      .doc("PkgRmT4N6fgCQpZJ7Mkw")
+    let doc = await db
+      .collection("users")
+      .doc(email)
       .update({
         Schedules: firebase.firestore.FieldValue.arrayUnion(id),
-      })
-      // .than(doc => alert("Appointment Booked"))
-      .catch((error) => {
-        console.log(error);
       });
-  };
+  }
 
   return doctorInfo ? (
     <View style={{ flex: 1 }}>

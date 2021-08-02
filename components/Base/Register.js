@@ -36,7 +36,8 @@ export default function Register({navigation}) {
             
       await db
       .collection("users")
-      .add({
+      .doc(email)
+      .set({
         Name : name,
         Email : email,
         Password : password,
