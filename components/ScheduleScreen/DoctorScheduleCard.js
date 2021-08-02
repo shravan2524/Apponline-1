@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Icon } from "react-native-eva-icons";
+import { stopClock } from "react-native-reanimated";
 import colors from "../../constants/colors";
 import { db } from "../../Firebase";
 
@@ -41,8 +42,9 @@ const TimeAndButtons = ({ date, starttime, endtime }) => {
 function DoctorScheduleCard(props) {
   const [slots, setSlots] = useState([]);
   const { timeline, email } = props;
+  console.log(email)
+  const date = new Date();
   useEffect(() => {
-
     const unsub = db
       .collection("users")
       .where("Email", "==", email)
@@ -81,20 +83,35 @@ function DoctorScheduleCard(props) {
 
   return (
     <View>
-      {slots.map((tempslots) => {
-        return (
-          <View style={styles.container}>
-            <DoctorDetails
-              name={tempslots.DoctorName}
-              speciality={tempslots.Speciality}
-            />
-            <TimeAndButtons
-              date={tempslots.Date}
-              starttime={tempslots.Starttime}
-              endtime={tempslots.Endtime}
-            />
-          </View>
-        );
+      {slots.map((slot) => {
+        let canceled = false;
+        slot.Patients.forEach((patient) => {
+          if (patient.email == email) canceled = patient.cancel;
+        });
+        var m = date.getMonth() + 1;
+        var d = date.getDay();
+        var y = date.getFullYear();
+        var today = new Date(y, m, d);
+        let show =
+          (canceled == 0 && timeline == 2) ||
+          (!canceled && timeline == 0 && slot.Date <= today) ||
+          (!canceled && timeline == 1 && slot.Date > today);
+
+        if (show) {
+          return (
+            <View style={styles.container}>
+              <DoctorDetails
+                name={slot.DoctorName}
+                speciality={tempslots.Speciality}
+              />
+              <TimeAndButtons
+                date={slot.Date}
+                starttime={slot.Starttime}
+                endtime={slot.Endtime}
+              />
+            </View>
+          );
+        }
       })}
     </View>
   );
