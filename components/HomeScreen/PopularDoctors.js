@@ -54,7 +54,7 @@ const formatData = (list) => {
     return list;
 }
 
-const PopularDoctors = ({ navigation }) => {
+const PopularDoctors = ({ email, navigation }) => {
     const [doctorsList, setDoctorsList] = useState([]);
 
     useEffect(() => {
@@ -79,10 +79,10 @@ const PopularDoctors = ({ navigation }) => {
 
     const renderItem = ({item, index}) => {
         if(item.empty == true){
-           return <DoctorCard id={item._id} visible={false} name={''} speciality={''} rating={''} navigation={navigation}/>
+           return <DoctorCard email = {email} id={item._id} visible={false} name={''} speciality={''} rating={''} navigation={navigation}/>
         }
         return (
-            <DoctorCard id={item._id} visible={true} name={item.name} speciality={item.speciality} rating={item.rating} navigation={navigation}/>
+            <DoctorCard email = {email} id={item._id} visible={true} name={item.name} speciality={item.speciality} rating={item.rating} navigation={navigation}/>
         )
     }
 

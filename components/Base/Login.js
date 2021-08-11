@@ -16,7 +16,9 @@ export default function Login({ navigation }) {
     console.log("here");
     auth.onAuthStateChanged((authUser) => {
       if (authUser) {
-        navigation.replace("Home");
+        navigation.replace("Home",{
+          email: authUser.email
+        });
       }
     });
   }

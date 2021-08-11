@@ -18,7 +18,7 @@ export default function Register({navigation}) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [type, setType] = useState("Doctor")
-
+  const [Schedules, setSchedules] = useState([" "]);
   const registerUser = async () => {
     console.log("pressed");
     console.log(type);
@@ -33,15 +33,15 @@ export default function Register({navigation}) {
         navigation.navigate("Login")
       })
       .catch(err => console.log(err))
-
-
+            
       await db
       .collection("users")
-      .add({
+      .doc(email)
+      .set({
         Name : name,
         Email : email,
         Password : password,
-        Type : type,
+        Schedules : Schedules,
       })
   }
 

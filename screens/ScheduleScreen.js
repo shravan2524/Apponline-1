@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 
 import { Text, View, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -6,19 +6,16 @@ import Timeline from "../components/ScheduleScreen/Timeline";
 import DoctorScheduleCard from "../components/ScheduleScreen/DoctorScheduleCard";
 
 
-
-
-/// Title
-/// TimeLine
-/// VisitCard
-///   Nearest Visit
-///   Future Visits
-const ScheduleScreen = () => {
+const ScheduleScreen = ({route}) => {
+    const {email} = route.params
+    console.log("sscreen email", email)
+    const [timeline, setTimeline] = useState(0);
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.header}>Schedule</Text>
-            <Timeline />
-            <DoctorScheduleCard />
+            {/*Upcoming Completed Canceled */}
+            <Timeline timeline={timeline} setTimeline={setTimeline}/> 
+            <DoctorScheduleCard timeline={timeline} email={email}/>
         </ScrollView>    
     )
 }
