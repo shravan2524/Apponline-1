@@ -8,7 +8,6 @@ import DoctorScheduleCard from "../components/ScheduleScreen/DoctorScheduleCard"
 
 const ScheduleScreen = ({route}) => {
     const {email} = route.params
-    console.log("sscreen email", email)
     const [timeline, setTimeline] = useState(0);
     return (
         <ScrollView style={styles.container}>
