@@ -42,7 +42,6 @@ const TimeAndButtons = ({ date, starttime, endtime }) => {
 function DoctorScheduleCard(props) {
   const [slots, setSlots] = useState([]);
   const { timeline, email } = props;
-  console.log(email)
   const date = new Date();
   useEffect(() => {
     const unsub = db
@@ -51,6 +50,7 @@ function DoctorScheduleCard(props) {
       .onSnapshot(
         (snap) => {
           let schedules = snap.docs[0].data().Schedules;
+          console.log(schedules)
           getSlots(schedules);
         },
         (error) => {
@@ -85,24 +85,26 @@ function DoctorScheduleCard(props) {
     <View>
       {slots.map((slot) => {
         let canceled = false;
-        slot.Patients.forEach((patient) => {
-          if (patient.email == email) canceled = patient.cancel;
-        });
+        if(slot){
+          slot.Patients.forEach((patient) => {
+            if (patient.email == email) canceled = (patient.status == false);
+          });
+        }
         var m = date.getMonth() + 1;
         var d = date.getDay();
         var y = date.getFullYear();
-        var today = new Date(y, m, d).split('T')[0];  
-        let show =
-          (canceled == 0 && timeline == 2) ||
-          (!canceled && timeline == 0 && slot.Date <= today) ||
-          (!canceled && timeline == 1 && slot.Date > today);
+        var today = new Date(y, m, d).toISOString.toString().split('T')[0];
+        let show = 
+          (canceled && timeline == 2) ||
+          (!canceled && (timeline == 0) && slot.Date <= today) ||
+          (!canceled && (timeline == 1) && slot.Date > today);
 
         if (show) {
           return (
             <View style={styles.container}>
               <DoctorDetails
                 name={slot.DoctorName}
-                speciality={tempslots.Speciality}
+                speciality={slot.Speciality}
               />
               <TimeAndButtons
                 date={slot.Date}

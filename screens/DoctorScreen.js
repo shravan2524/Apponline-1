@@ -115,7 +115,10 @@ function DoctorScreen({ route, navigation }) {
       .collection("schedule")
       .doc(slotId)
       .update({
-        Patients: firebase.firestore.FieldValue.arrayUnion(email),
+        Patients: firebase.firestore.FieldValue.arrayUnion({
+          email,
+          status: true
+        }),
       })
       .then((doc) => {
         alert("Appointment Booked");
@@ -128,7 +131,7 @@ function DoctorScreen({ route, navigation }) {
       .collection("users")
       .doc(email)
       .update({
-        Schedules: firebase.firestore.FieldValue.arrayUnion(id),
+        Schedules: firebase.firestore.FieldValue.arrayUnion(slotId),
       });
   }
 
