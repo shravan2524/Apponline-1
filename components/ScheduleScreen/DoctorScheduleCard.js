@@ -91,7 +91,7 @@ function DoctorScheduleCard(props) {
         var m = date.getMonth() + 1;
         var d = date.getDay();
         var y = date.getFullYear();
-        var today = new Date(y, m, d);
+        var today = new Date(y, m, d).split('T')[0];  
         let show =
           (canceled == 0 && timeline == 2) ||
           (!canceled && timeline == 0 && slot.Date <= today) ||
