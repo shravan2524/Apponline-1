@@ -1,14 +1,17 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { Pressable } from "react-native";
 import { Text, View, StyleSheet } from "react-native";
 import { Icon } from "react-native-eva-icons";
 import { stopClock } from "react-native-reanimated";
 import colors from "../../constants/colors";
 import { db } from "../../Firebase";
-
+import "firebase/firestore";
+import firebase from "firebase";
 // description
 // time
 // schedule
+
 
 const DoctorDetails = ({ name, speciality }) => {
   return (
@@ -22,7 +25,7 @@ const DoctorDetails = ({ name, speciality }) => {
   );
 };
 
-const TimeAndButtons = ({ date, starttime, endtime }) => {
+const TimeAndButtons = ({ date, starttime, endtime, id, cancel }) => {
   return (
     <View style={styles.timeAndButtons}>
       <View style={styles.time}>
@@ -32,7 +35,7 @@ const TimeAndButtons = ({ date, starttime, endtime }) => {
         </Text>
       </View>
       <View style={styles.btngrp}>
-        <Text style={[styles.btn, styles.btnl]}>Cancel</Text>
+        <Pressable onPress={() => cancel(id)} style={[styles.btn, styles.btnl]}><Text>Cancel</Text></Pressable>
         <Text style={[styles.btn, styles.btnr]}>Reschedule</Text>
       </View>
     </View>
@@ -40,52 +43,49 @@ const TimeAndButtons = ({ date, starttime, endtime }) => {
 };
 
 function DoctorScheduleCard(props) {
-  const [slots, setSlots] = useState([]);
-  const { timeline, email } = props;
+  const { timeline, email, slots, setSlots } = props;
   const date = new Date();
-  useEffect(() => {
-    const unsub = db
-      .collection("users")
-      .where("Email", "==", email)
-      .onSnapshot(
-        (snap) => {
-          let schedules = snap.docs[0].data().Schedules;
-          console.log(schedules)
-          getSlots(schedules);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-
-    async function getSlots(schedules) {
-      let tempslots = [];
-      var count = 0;
-      await schedules.forEach((scheduleId) => {
-        db.collection("schedule")
-          .doc(scheduleId)
-          .onSnapshot(
-            (snapshot) => {
-              tempslots.push(snapshot.data());
-              count++;
-              if (count == schedules.length) {
-                setSlots(tempslots);
-              }
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-      });
+ 
+  async function cancelAppointment(id) {
+    const obj = {
+      email: "abc@gmail.con",
+      status: true
     }
-    return unsub;
-  }, []);
+    const obj1 = {
+      email: "abc@gmail.con",
+      status: false
+    }
+    console.log(id);
+
+    await db.collection("schedule")
+      .doc(id)
+      .update({
+        Patients: firebase.firestore.FieldValue.arrayRemove(obj),
+      })
+
+    await db.collection("schedule")
+      .doc(id)
+      .update({
+        Patients: firebase.firestore.FieldValue.arrayUnion(obj1)
+      })
+
+    let tempSlots = slots.map(slot =>({...slot}))
+    tempSlots.forEach((slot, index) => {
+      slot.Patients.forEach((patient, pindex) => {
+        if(patient.email == obj.email)
+          tempSlots[index].Patients[pindex].status = false 
+      })
+    })
+    console.log(tempSlots);
+    setSlots(tempSlots)
+    // window.location.reload();
+  }
 
   return (
     <View>
       {slots.map((slot) => {
         let canceled = false;
-        if(slot){
+        if (slot) {
           slot.Patients.forEach((patient) => {
             if (patient.email == email) canceled = (patient.status == false);
           });
@@ -94,7 +94,7 @@ function DoctorScheduleCard(props) {
         var d = date.getDay();
         var y = date.getFullYear();
         var today = new Date(y, m, d).toISOString.toString().split('T')[0];
-        let show = 
+        let show =
           (canceled && timeline == 2) ||
           (!canceled && (timeline == 0) && slot.Date <= today) ||
           (!canceled && (timeline == 1) && slot.Date > today);
@@ -110,6 +110,8 @@ function DoctorScheduleCard(props) {
                 date={slot.Date}
                 starttime={slot.Starttime}
                 endtime={slot.Endtime}
+                cancel={cancelAppointment}
+                id={slot.id}
               />
             </View>
           );

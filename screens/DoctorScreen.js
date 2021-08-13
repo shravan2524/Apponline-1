@@ -127,6 +127,8 @@ function DoctorScreen({ route, navigation }) {
         console.log(error);
       });
 
+
+    const email_doc = email.charAt(0).toUpperCase() + email.slice(1);
     let doc = await db
       .collection("users")
       .doc(email)
