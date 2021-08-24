@@ -1,10 +1,14 @@
 import React from "react";
+import { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 
 import { Text, View, StyleSheet } from "react-native";
 import { Icon } from "react-native-eva-icons";
 import colors from "../../constants/colors";
-const DoctorCard = ({ email, id, visible, rating, speciality, name, navigation }) => {
+const DoctorCard = ({ email, id, visible, rating, speciality, name, navigation, doctorEmail }) => {
+  useEffect(() => {
+    console.log(doctorEmail);
+  }, [])
   return (
     <TouchableOpacity
       style={visible ? styles.container : [styles.containerInvisible]}
@@ -12,7 +16,8 @@ const DoctorCard = ({ email, id, visible, rating, speciality, name, navigation }
           if(id){
             navigation.navigate("Doctor", {
                 id,
-                email
+                email,
+                doctorEmail
             })
           }
       }}

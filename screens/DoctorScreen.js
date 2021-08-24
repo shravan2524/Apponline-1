@@ -21,7 +21,7 @@ import { First } from "react-bootstrap/esm/PageItem";
 function DoctorScreen({ route, navigation }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [doctorInfo, setDoctorInfo] = useState();
-  const { id, email } = route.params;
+  const { id, email, doctorEmail } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   const [selectdate, setSelectdate] = useState("");
   const showDatePicker = () => {
@@ -58,6 +58,7 @@ function DoctorScreen({ route, navigation }) {
       .onSnapshot(
         (snapShot) => {
           setDoctorInfo(snapShot.data());
+          // console.log("doctorInfo", doctorInfo);
         },
         (error) => {
           console.log(error);
@@ -69,23 +70,26 @@ function DoctorScreen({ route, navigation }) {
   let speciality = "Therapist";
   let about =
     "Dr John.jose is an experiece specialist who is constantly working on imporovind his skills";
-  let reviews = [
-    {
-      name: "Shravan Chenna",
-      stars: "5.0",
-      desc: "Many thanks to his doctor for getiing my best trearment",
-    },
-    {
-      name: "Shravan Chenna",
-      stars: "5.0",
-      desc: "Many thanks to his doctor for getiing my best trearment",
-    },
-    {
-      name: "Shravan Chenna",
-      stars: "5.0",
-      desc: "Many thanks to his doctor for getiing my best trearment",
-    },
-  ];
+
+  const [reviews, setreviews] = useState([]);
+
+  // let doctorEmail = "shravanchenna@gmail.com";
+  useEffect(() => {
+    console.log(doctorEmail);
+    let unseb = db
+      .collection("reviews")
+      .doc(doctorEmail)
+      .onSnapshot(
+        (snap) => {
+          let reviewArray = snap.data().reviews;
+          console.log("review", reviewArray);
+          setreviews(reviewArray);
+        }
+      )
+      return unseb;
+  }, []);
+
+
   let clinic = "Lotus Clinic";
   let address = "Los Angles, USA";
   const [schedules, setSchedules] = useState([]);
@@ -127,7 +131,7 @@ function DoctorScreen({ route, navigation }) {
         console.log(error);
       });
 
-
+    console.log(email);
     const email_doc = email.charAt(0).toUpperCase() + email.slice(1);
     let doc = await db
       .collection("users")

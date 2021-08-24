@@ -1,13 +1,14 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import { Pressable } from "react-native";
-import { Text, View, StyleSheet } from "react-native";
+import { useEffect, useState, Input, TextInput } from "react";
+import { Pressable, Modal } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
 import { Icon } from "react-native-eva-icons";
 import { stopClock } from "react-native-reanimated";
 import colors from "../../constants/colors";
 import { db } from "../../Firebase";
 import "firebase/firestore";
 import firebase from "firebase";
+import Review from "../Modals/Review";
 // description
 // time
 // schedule
@@ -17,26 +18,53 @@ const DoctorDetails = ({ name, speciality }) => {
   return (
     <View style={styles.doctorDetails}>
       <View>
+      <Image 
+                style={{
+                    flex: 1,
+                    resizeMode: "cover",
+                    height: 70,
+                    width: 70,
+                    marginRight : 30,
+                    marginLeft: 5,
+                    borderRadius : 100,
+                }}
+                source={require('../../Images/DoctorDefaultProfile.png')}
+            />
+        </View>
+        <View style={{flex : 1, flexDirection : "column"}}>
         <Text style={styles.doctorName}>{name}</Text>
         <Text style={styles.doctorSpeciality}>{speciality}</Text>
-      </View>
-      <Icon name="github" width={48} height={48} />
+        </View>
     </View>
   );
 };
 
-const TimeAndButtons = ({ date, starttime, endtime, id, cancel }) => {
+const TimeAndButtons = ({ date, starttime, endtime, id, cancel, timeline, doctorname , doctorEmail}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  
   return (
     <View style={styles.timeAndButtons}>
       <View style={styles.time}>
-        <Text style={styles.doctorSpeciality}>{date}</Text>
-        <Text style={styles.doctorSpeciality}>
+        <Text style={styles.doctorfont}>{date}</Text>
+        <Text style={styles.doctorfont}>
           {starttime} - {endtime}
         </Text>
       </View>
       <View style={styles.btngrp}>
-        <Pressable onPress={() => cancel(id)} style={[styles.btn, styles.btnl]}><Text>Cancel</Text></Pressable>
-        <Text style={[styles.btn, styles.btnr]}>Reschedule</Text>
+      <Modal
+        style={{ backgroundColor: "grey" }}
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <Review doctorname={doctorname} doctorEmail={doctorEmail} />
+        </Modal>
+      {
+        timeline == 0 ? <Pressable onPress={() => cancel(id)} style={[styles.btn, styles.btnl]}><Text>Cancel</Text></Pressable>
+        : <Pressable onPress={() => setModalVisible(true)} style={[styles.btn, styles.btnl]}><Text>Review</Text></Pressable>
+      }
       </View>
     </View>
   );
@@ -46,13 +74,15 @@ function DoctorScheduleCard(props) {
   const { timeline, email, slots, setSlots } = props;
   const date = new Date();
  
-  async function cancelAppointment(id) {
+async function cancelAppointment(id) {
+    console.log(id);
+      // id = "RDTateq0lpcGMtLTlGNm";
     const obj = {
-      email: "abc@gmail.con",
+      email: email,
       status: true
     }
     const obj1 = {
-      email: "abc@gmail.con",
+      email: email,
       status: false
     }
     console.log(id);
@@ -69,16 +99,39 @@ function DoctorScheduleCard(props) {
         Patients: firebase.firestore.FieldValue.arrayUnion(obj1)
       })
 
-    let tempSlots = slots.map(slot =>({...slot}))
-    tempSlots.forEach((slot, index) => {
-      slot.Patients.forEach((patient, pindex) => {
-        if(patient.email == obj.email)
-          tempSlots[index].Patients[pindex].status = false 
-      })
-    })
-    console.log(tempSlots);
-    setSlots(tempSlots)
-    // window.location.reload();
+        await db.collection("users")
+        .where("Email", "==", email)
+        .onSnapshot(
+          (snap) => {
+            let schedules = snap.docs[0].data().Schedules;
+            console.log(schedules)
+            getSlots(schedules);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+  
+      async function getSlots(schedules) {
+        let tempslots = [];
+        var count = 0;
+        await schedules.forEach((scheduleId) => {
+          db.collection("schedule")
+            .doc(scheduleId)
+            .onSnapshot(
+              (snapshot) => {
+                tempslots.push({...snapshot.data(), id: scheduleId});
+                count++;
+                if (count == schedules.length) {
+                  setSlots(tempslots);
+                }
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+        });
+      }
   }
 
   return (
@@ -90,18 +143,27 @@ function DoctorScheduleCard(props) {
             if (patient.email == email) canceled = (patient.status == false);
           });
         }
-        var m = date.getMonth() + 1;
-        var d = date.getDay();
+        console.log("slot", slot.id)
+        var m = date.getMonth();
+        var d = date.getDate() + 1;
         var y = date.getFullYear();
-        var today = new Date(y, m, d).toISOString.toString().split('T')[0];
+        var today = new Date(y, m, d).toISOString().toString().split('T')[0];
+
+        var todayd = today.split('-')[2];
+        var todaym = today.split('-')[1];
+        var todayy = today.split('-')[0];
+        today = `${todayd}-${todaym}-${todayy}`
+        // today = "01-06-2021";
+
+        console.log(today)
         let show =
           (canceled && timeline == 2) ||
-          (!canceled && (timeline == 0) && slot.Date <= today) ||
-          (!canceled && (timeline == 1) && slot.Date > today);
+          (!canceled && (timeline == 0) && (slot.Date.localeCompare(today) > 0 )) ||
+          (!canceled && (timeline == 1) && (slot.Date.localeCompare(today) < 0 ));
 
         if (show) {
           return (
-            <View style={styles.container}>
+            <View style={[styles.card, styles.elevation]}>
               <DoctorDetails
                 name={slot.DoctorName}
                 speciality={slot.Speciality}
@@ -112,6 +174,9 @@ function DoctorScheduleCard(props) {
                 endtime={slot.Endtime}
                 cancel={cancelAppointment}
                 id={slot.id}
+                timeline={timeline}
+                doctorname={slot.DoctorName}
+                doctorEmail={slot.email}
               />
             </View>
           );
@@ -122,15 +187,20 @@ function DoctorScheduleCard(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    margin: 10,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    flex:1,
+    justifyContent : "space-between",
+    width: '94%',
+    marginHorizontal : 12,
+    marginVertical : 10,
+  },
+  elevation: {
+    elevation: 7,
+    shadowColor: '#52006A',
   },
   doctorDetails: {
     flex: 1,
@@ -138,43 +208,60 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   doctorName: {
-    fontSize: 24,
+    fontSize: 22,
+  },
+  doctorfont : {
+    fontSize : 17,
+    color: "grey",
   },
   doctorSpeciality: {
-    fontSize: 18,
-    color: colors.dwhite,
+    fontSize: 17,
+    // backgroundColor : "purple",
+    color: colors.llblue,
   },
   timeAndButtons: {
-    paddingVertical: 10,
-    marginTop: 20,
+    marginHorizontal : 10,
+    // marginRight: 13,
+    paddingVertical: 0,
+    marginTop: 10,
   },
   time: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    textAlign: "center",
   },
   btngrp: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     marginTop: 10,
   },
   btn: {
-    flex: 1,
+    // flex: 1,
     fontSize: 18,
-    paddingVertical: 15,
+    paddingHorizontal : 20,
+    paddingVertical: 13,
     backgroundColor: colors.gwhite,
     justifyContent: "center",
+    alignItems : "flex-end",
     textAlign: "center",
     borderRadius: 5,
-  },
-  btnl: {
-    marginRight: 5,
   },
   btnr: {
     marginLeft: 5,
     color: colors.gwhite,
     backgroundColor: colors.blue,
   },
+  button:{
+    width : "100%",
+    fontSize :15,
+    flex : 1,
+    position : "absolute",
+    bottom : 10,
+    alignItems : "center",
+    borderColor : "black",
+    borderWidth : 0.1,
+  }
 });
 export default DoctorScheduleCard;

@@ -12,36 +12,42 @@ const ScheduleScreen = ({route}) => {
     const [slots, setSlots] = useState([]);
     useEffect(() => {
         console.log("here")
-        async function getData() {
-          try {
-            let doc = await db
-              .collection("users")
-              .where("Email", "==", email)
-              .get();
-            doc = doc.docs[0].data().Schedules;
-            doc = await getSlots(doc);
-            setSlots(doc);
+        const unsub = db
+        .collection("users")
+        .where("Email", "==", email)
+        .onSnapshot(
+          (snap) => {
+            let schedules = snap.docs[0].data().Schedules;
+            console.log(schedules)
+            getSlots(schedules);
+          },
+          (error) => {
+            console.log(error);
           }
-          catch (err) {
-            console.log(err);
-          }
-        }
-    
-        async function getSlots(schedules) {
-          let tempslots = [];
-          await schedules.forEach(async (scheduleId) => {
-            await db.collection("schedule")
-              .doc(scheduleId)
-              .get()
-              .then((doc) => {
-                if (doc.exists) {
-                  tempslots.push({ ...doc.data(), id: scheduleId })
+        );
+  
+      async function getSlots(schedules) {
+        let tempslots = [];
+        var count = 0;
+        await schedules.forEach((scheduleId) => {
+          db.collection("schedule")
+            .doc(scheduleId)
+            .onSnapshot(
+              (snapshot) => {
+                tempslots.push({...snapshot.data(), id: scheduleId});
+                count++;
+                if (count == schedules.length) {
+                  console.log("slots", tempslots)
+                  setSlots(tempslots);
                 }
-              });
-          });
-          return tempslots;
-        }
-        getData();
+              },
+              (error) => {
+                console.log(error);
+              }
+            );
+        });
+      }
+      return unsub;
       }, []);
     
     return (

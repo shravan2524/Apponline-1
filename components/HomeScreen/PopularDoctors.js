@@ -82,7 +82,7 @@ const PopularDoctors = ({ email, navigation }) => {
            return <DoctorCard email = {email} id={item._id} visible={false} name={''} speciality={''} rating={''} navigation={navigation}/>
         }
         return (
-            <DoctorCard email = {email} id={item._id} visible={true} name={item.name} speciality={item.speciality} rating={item.rating} navigation={navigation}/>
+            <DoctorCard email = {email} id={item._id} visible={true} name={item.name} speciality={item.speciality} doctorEmail={item.email} rating={item.rating} navigation={navigation}/>
         )
     }
 
