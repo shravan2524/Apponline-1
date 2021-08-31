@@ -52,7 +52,7 @@ const TimeAndButtons = ({ date, starttime, endtime, id, cancel, timeline, doctor
       </View>
       <View style={styles.btngrp}>
       <Modal
-        style={{ backgroundColor: "grey" }}
+        // style={{ backgroundColor: "grey" }}
         animationType="slide"
         visible={modalVisible}
         onRequestClose={() => {
@@ -84,7 +84,7 @@ async function cancelAppointment(id) {
     const obj1 = {
       email: email,
       status: false
-    }
+    };
     console.log(id);
 
     await db.collection("schedule")

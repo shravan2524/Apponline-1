@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import PopularDoctors from '../components/HomeScreen/PopularDoctors';
 import Symptoms from '../components/HomeScreen/Symptoms';
 import Title from '../components/HomeScreen/Title';
 import Visit from '../components/HomeScreen/Visit';
+import DoctorUi from './DoctorUi';
 
 /*
 *   Name
@@ -15,10 +16,14 @@ import Visit from '../components/HomeScreen/Visit';
 function HomeScreen({ route, navigation }) {
     const {email} = route.params;
     // let email = "asdfad";
+    const [userType, setuserType] = useState("doctor");
+    useEffect(() => {
+        console.log("User", userType);
+    }, [])
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
-                <Title name="UserName" />
+                <Title name="UserName" userType = {userType} />
             </View>
             <Visit/>
             <Symptoms />

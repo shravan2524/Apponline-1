@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 
 import { TouchableOpacity,Text, View, StyleSheet } from "react-native";
 
@@ -7,9 +7,12 @@ import HomeScreen from "../screens/HomeScreen";
 import ScheduleScreen from "../screens/ScheduleScreen";
 import DoctorScreen from "../screens/DoctorScreen";
 
+import CurrentNews from "../components/News/CurrentNews";
 
 import colors from "../constants/colors"
 import { Icon } from "react-native-eva-icons";
+import DoctorUi from "../screens/DoctorUi";
+import DoctorSchedule from "../components/ScheduleScreen/DoctorSchedule";
 
 const Tab = createBottomTabNavigator();
 
@@ -67,14 +70,24 @@ function BottomNavigatorButton({ state, descriptors, navigation }) {
   }
 
 const BottomNavigator = ({route}) => {
-   const {email} = route.params
+   const {email} = route.params;
+  //  const {userType} = route.params;
+  const [userType, setuserType] = useState("doctor")
    console.log("bottom email", email)
     return (
      <Tab.Navigator style={styles.container} tabBar={(props) => <BottomNavigatorButton {...props} />}>
-        <Tab.Screen name="Home" component={HomeScreen} initialParams={{email}}/>
-        <Tab.Screen name="Schedule" component={ScheduleScreen} initialParams={{email}}/>
-        <Tab.Screen name="Messages" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={ScheduleScreen} />
+        {
+                    (userType == "doctor")
+                    ? <Tab.Screen name="Home" component={DoctorUi}  initialParams={{email}}/>
+                    : <Tab.Screen name="Home" component={HomeScreen} initialParams={{email}}/>
+         }
+         {
+                    (userType == "doctor")
+                    ? <Tab.Screen name="Schedule" component={DoctorSchedule}  initialParams={{email}}/>
+                    : <Tab.Screen name="Schedule" component={ScheduleScreen} initialParams={{email}}/>
+         }
+        
+        <Tab.Screen name="news" component={CurrentNews} initialParams={{email}} />
       </Tab.Navigator>
     )
 }

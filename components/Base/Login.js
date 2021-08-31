@@ -12,15 +12,29 @@ import { db } from "../../Firebase";
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  function login() {
+  const [userType, setUserType] = useState("doctor");
+  async function login() {
     console.log("here");
-    auth.onAuthStateChanged((authUser) => {
+    await auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         navigation.replace("Home",{
-          email: authUser.email
+          email: authUser.email,
+          user : userType
         });
       }
     });
+
+      await db.collection("doctors")
+      .where("email", "==", email)
+      .onSnapshot(
+        (snap) => {
+        },
+        (error) => {
+          // console.log(error);
+        }
+      );
+
+      console.log("User", userType);
   }
 
   return (

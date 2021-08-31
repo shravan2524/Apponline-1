@@ -3,11 +3,17 @@ import React from "react"
 import { Text, View, StyleSheet } from "react-native";
 import VisitCard from "./VisitCard";
 
-const Visit = () => {
+const Visit = (props) => {
     return (
         <View style={styles.container}>
-            <VisitCard name="Clinic visit" description="Make an Appointment"/>
-            <VisitCard name="Home visit" description="Call the doctor home"/>
+            {
+                (props.userType == "doctor")
+                ? <View><VisitCard name="Clinic visit" description="Schedule an Appointment"/>
+                </View>
+                : <View><VisitCard name="Clinic visit" description="Make an Appointment"/>
+                <VisitCard name="Home visit" description="Call the doctor home"/></View>
+            }
+            
         </View>
     )
 }

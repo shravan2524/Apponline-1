@@ -76,24 +76,6 @@ export default function Register({navigation}) {
           value={confirmPassword}
           onChangeText={(text) => setConfirmPassword(text)}
         />
-        <View style={styles.typeGroup}>
-          <CheckBox
-            title="Doctor"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            checked={type == "Doctor"}
-            onPress={() => setType("Doctor")}
-            containerStyle={styles.checkBox}
-          />
-          <CheckBox
-            title="Patient"
-            checkedIcon="dot-circle-o"
-            uncheckedIcon="circle-o"
-            checked={type == "Patient"}
-            onPress={() => setType("Patient")}
-            containerStyle={styles.checkBox}
-          />
-        </View>
       </View>
       <TouchableOpacity style={styles.button} onPress={registerUser}>
         <Text style={{ padding: 5, color: "#fff" }} h4>

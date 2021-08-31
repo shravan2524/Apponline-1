@@ -163,7 +163,7 @@ function DoctorScreen({ route, navigation }) {
         </ScrollView>
       </View>
       <Modal
-        style={{ backgroundColor: "grey" }}
+        // style={{ backgroundColor: "grey" }}
         animationType="slide"
         visible={modalVisible}
         onRequestClose={() => {
