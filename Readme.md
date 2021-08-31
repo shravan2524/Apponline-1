@@ -20,7 +20,6 @@
 <img src="Images/Home.jpeg" width="250" height="500" >
 
 ### *Schedule Screen*
-- It screen is divided into 3 sections.
 - Patients can track, view past appointment,  cancel their appointment.
 
 
