@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { TouchableOpacity,Text, View, StyleSheet, ScrollView,  SafeAreaView } from "react-native";
 import Title from '../components/HomeScreen/Title';
 import Visit from '../components/HomeScreen/Visit';
+import Covid from '../components/HomeScreen/Covid';
 const DoctorUi = () => {
     const [userType, setuserType] = useState("doctor");
     return (
@@ -10,6 +11,7 @@ const DoctorUi = () => {
             <Title name="UserName" userType = {userType} />
         </View>
         <Visit  userType = {userType} />
+        <Covid />
     </ScrollView>
     );
 }

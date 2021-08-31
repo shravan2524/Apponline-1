@@ -11,7 +11,8 @@ import AppointmentCard from './AppointmentCard';
 
 
 const DoctorScheduleCard1 = (props) => {
-    const { timeline } = props;
+    // const { timeline,email } = props;
+    const {timeline} = props;
     var email = "chris@gmail.com";
     const [schedules, setschedules] = useState([])
     useEffect(() => {

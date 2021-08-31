@@ -15,8 +15,8 @@ import DoctorUi from './DoctorUi';
 */
 function HomeScreen({ route, navigation }) {
     const {email} = route.params;
-    // let email = "asdfad";
-    const [userType, setuserType] = useState("doctor");
+    // Hardcode
+    const [userType, setuserType] = useState("docjtor");
     useEffect(() => {
         console.log("User", userType);
     }, [])

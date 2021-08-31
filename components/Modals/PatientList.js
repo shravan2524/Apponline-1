@@ -87,14 +87,17 @@ const styles = StyleSheet.create({
     text: {
         alignItems: "center",
         color : "white",
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
-        textDecorationColor: "white",
+        textDecorationColor : "black",
+        textDecorationStyle : "solid",
+        textDecorationLine : "underline",
 
     },
     texting: {
         fontSize: 26,
         color : "white",
+        textDecorationColor : "white",
+        textDecorationStyle : "solid",
+        textDecorationLine : "underline",
         
     },
     texing1: {

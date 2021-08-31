@@ -21,10 +21,11 @@ const CurrentNews = () => {
         });
     }, [])
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.text}>
                 <Text style={{color: "white" , fontSize: 20}}>NEWS</Text>
             </View>
+            <ScrollView>
             {
                 news?
                 news.map((x, i) => {
@@ -34,7 +35,8 @@ const CurrentNews = () => {
                })
                : 0
             }
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
 
@@ -43,8 +45,11 @@ const styles = StyleSheet.create({
         paddingTop : 20,
     },
     text:{
-        flex: 1,
-        paddingVertical: 12,
+        // flex: 1,
+        justifyContent : "center",
+        alignItems : "center",
+        marginTop : 15,
+        paddingVertical: 20,
         backgroundColor: colors.blue,
         alignItems: "center",
     }

@@ -12,7 +12,9 @@ import { db } from "../../Firebase";
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("doctor");
+
+  // hardcode
+  const [userType, setUserType] = useState("docor");
   async function login() {
     console.log("here");
     await auth.onAuthStateChanged((authUser) => {

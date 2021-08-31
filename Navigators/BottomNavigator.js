@@ -72,22 +72,14 @@ function BottomNavigatorButton({ state, descriptors, navigation }) {
 const BottomNavigator = ({route}) => {
    const {email} = route.params;
   //  const {userType} = route.params;
-  const [userType, setuserType] = useState("doctor")
+  // Hardcode
+  const [userType, setuserType] = useState("dochtor")
    console.log("bottom email", email)
     return (
-     <Tab.Navigator style={styles.container} tabBar={(props) => <BottomNavigatorButton {...props} />}>
-        {
-                    (userType == "doctor")
-                    ? <Tab.Screen name="Home" component={DoctorUi}  initialParams={{email}}/>
-                    : <Tab.Screen name="Home" component={HomeScreen} initialParams={{email}}/>
-         }
-         {
-                    (userType == "doctor")
-                    ? <Tab.Screen name="Schedule" component={DoctorSchedule}  initialParams={{email}}/>
-                    : <Tab.Screen name="Schedule" component={ScheduleScreen} initialParams={{email}}/>
-         }
-        
-        <Tab.Screen name="news" component={CurrentNews} initialParams={{email}} />
+     <Tab.Navigator style={styles.container} tabBar={(props) => <BottomNavigatorButton {...props} />} >
+            <Tab.Screen name="Home" component={userType == "doctor"?DoctorUi:HomeScreen}  initialParams={{email}}/>
+            <Tab.Screen name="Schedule" component={userType == "doctor"?DoctorSchedule:ScheduleScreen}  initialParams={{email}}/>
+            <Tab.Screen name="news" component={CurrentNews} initialParams={{email}} />
       </Tab.Navigator>
     )
 }
