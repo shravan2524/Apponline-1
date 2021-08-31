@@ -14,7 +14,7 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState("");
 
   // hardcode
-  const [userType, setUserType] = useState("docor");
+  const [userType, setUserType] = useState("doctor");
   async function login() {
     console.log("here");
     await auth.onAuthStateChanged((authUser) => {

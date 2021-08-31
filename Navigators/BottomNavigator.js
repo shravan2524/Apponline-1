@@ -73,7 +73,7 @@ const BottomNavigator = ({route}) => {
    const {email} = route.params;
   //  const {userType} = route.params;
   // Hardcode
-  const [userType, setuserType] = useState("dochtor")
+  const [userType, setuserType] = useState("doctor")
    console.log("bottom email", email)
     return (
      <Tab.Navigator style={styles.container} tabBar={(props) => <BottomNavigatorButton {...props} />} >
