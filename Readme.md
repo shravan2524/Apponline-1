@@ -23,12 +23,10 @@
 - It screen is divided into 3 sections.
 - Patients can track, view past appointment,  cancel their appointment.
 
-<img src="Images/UpcomingSchedulepPage.jpeg" width="250" height="500">
 
-<img src="Images/CompletedSchedulepage.jpeg" width="250" height="500">
-
-<img src="Images/CanceledSchedulePage.jpeg" width="250" height="500" >
-
+<img src="Images/UpcomingSchedulepPage.jpeg" width="250" height="500" >
+<img src="Images/UpcomingSchedulepPage.jpeg" width="250" height="500" >
+<img src="Images/UpcomingSchedulepPage.jpeg" width="250" height="500" >
 
 ### *News Screen*
 - It consist of daily news feed.
