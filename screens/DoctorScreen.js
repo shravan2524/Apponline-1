@@ -43,7 +43,8 @@ function DoctorScreen({ route, navigation }) {
     s += "-";
     if (l[4] == "J") {
       s += "07-";
-    } else {
+    } 
+    else {
       s += "08-";
     }
     s += l[11] + l[12] + l[13] + l[14];
